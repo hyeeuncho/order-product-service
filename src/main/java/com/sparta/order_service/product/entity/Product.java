@@ -19,4 +19,17 @@ public class Product {
     private String name;
     private Integer price;
     private String description;
+
+    // 상품 수정
+    public void update(String name, Integer price, String description) {
+        if (name != null) {
+            this.name = name;
+        }
+        if (price != null) {
+            this.price = price;
+        }
+        if (description != null) {
+            this.description = description;
+        }
+    }
 }

@@ -40,4 +40,19 @@ public class ProductService {
                 .map(ProductResponse::from)
                 .toList();
     }
+
+    // 상품 수정
+    @Transactional
+    public Long updateProduct(Long productId, ProductRequest request) {
+        Product product = productRepository.findById(productId)
+                .orElseThrow(() -> new IllegalArgumentException("해당 상품이 존재하지 않습니다."));
+
+        product.update(
+                request.getName(),
+                request.getPrice(),
+                request.getDescription()
+        );
+
+        return product.getId();
+    }
 }

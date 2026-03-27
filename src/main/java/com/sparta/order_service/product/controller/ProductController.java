@@ -36,4 +36,14 @@ public class ProductController {
         List<ProductResponse> response = productService.getProducts();
         return ApiResponse.success(HttpStatus.OK, "상품 목록 조회 성공", response);
     }
+
+    // 상품 수정
+    @PatchMapping("/{productId}")
+    public ApiResponse<Long> updateProduct(
+            @PathVariable Long productId,
+            @RequestBody ProductRequest request
+    ) {
+        Long updatedProductId = productService.updateProduct(productId, request);
+        return ApiResponse.success(HttpStatus.OK, "상품 수정 성공", updatedProductId);
+    }
 }
