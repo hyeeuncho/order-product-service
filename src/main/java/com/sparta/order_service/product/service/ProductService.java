@@ -8,6 +8,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class ProductService {
@@ -22,5 +24,20 @@ public class ProductService {
                 .description(request.getDescription())
                 .build();
         return productRepository.save(product).getId();
+    }
+
+    // 상품 조회 - 단건
+    public ProductResponse getProduct(Long productId) {
+        Product product = productRepository.findById(productId)
+                .orElseThrow(() -> new IllegalArgumentException("해당 상품이 존재하지 않습니다."));
+
+        return ProductResponse.from(product);
+    }
+
+    // 상품 조회 - 목록
+    public List<ProductResponse> getProducts() {
+        return productRepository.findAll().stream()
+                .map(ProductResponse::from)
+                .toList();
     }
 }
