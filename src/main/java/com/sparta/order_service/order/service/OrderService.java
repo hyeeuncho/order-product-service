@@ -1,6 +1,7 @@
 package com.sparta.order_service.order.service;
 
 import com.sparta.order_service.order.dto.OrderRequest;
+import com.sparta.order_service.order.dto.OrderResponse;
 import com.sparta.order_service.order.entity.Order;
 import com.sparta.order_service.order.repository.OrderRepository;
 import com.sparta.order_service.product.entity.Product;
@@ -31,5 +32,13 @@ public class OrderService {
                 .build();
 
         return orderRepository.save(order).getId();
+    }
+
+    // 주문 조회 - 단건
+    public OrderResponse getOrder(Long orderId) {
+        Order order = orderRepository.findByIdWithProduct(orderId)
+                .orElseThrow(() -> new IllegalArgumentException("해당 주문이 존재하지 않습니다."));
+
+        return OrderResponse.from(order);
     }
 }
