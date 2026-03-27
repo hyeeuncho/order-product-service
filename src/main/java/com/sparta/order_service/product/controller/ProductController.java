@@ -46,4 +46,11 @@ public class ProductController {
         Long updatedProductId = productService.updateProduct(productId, request);
         return ApiResponse.success(HttpStatus.OK, "상품 수정 성공", updatedProductId);
     }
+
+    // 상품 삭제
+    @DeleteMapping("/{productId}")
+    public ApiResponse<Void> deleteProduct(@PathVariable Long productId) {
+        productService.deleteProduct(productId);
+        return ApiResponse.success(HttpStatus.OK, "상품 삭제 성공");
+    }
 }
