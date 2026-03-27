@@ -5,6 +5,8 @@ import com.sparta.order_service.order.dto.OrderRequest;
 import com.sparta.order_service.order.dto.OrderResponse;
 import com.sparta.order_service.order.service.OrderService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,5 +28,12 @@ public class OrderController {
     public ApiResponse<OrderResponse> getOrder(@PathVariable Long orderId) {
         OrderResponse response = orderService.getOrder(orderId);
         return ApiResponse.success(HttpStatus.OK, "주문 조회 성공", response);
+    }
+
+    // 주문 조회 - 목록(페이지네이션)
+    @GetMapping
+    public ApiResponse<Page<OrderResponse>> getOrders(Pageable pageable) {
+        Page<OrderResponse> response = orderService.getOrders(pageable);
+        return ApiResponse.success(HttpStatus.OK, "주문 목록 조회 성공", response);
     }
 }
