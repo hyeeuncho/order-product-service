@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Service
+@Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class ProductService {
     private final ProductRepository productRepository;
@@ -28,7 +29,7 @@ public class ProductService {
 
     // 상품 조회 - 단건
     public ProductResponse getProduct(Long productId) {
-        Product product = productRepository.findById(productId)
+        Product product = productRepository.findByIdAndDeletedFalse(productId)
                 .orElseThrow(() -> new IllegalArgumentException("해당 상품이 존재하지 않습니다."));
 
         return ProductResponse.from(product);
@@ -36,7 +37,7 @@ public class ProductService {
 
     // 상품 조회 - 목록
     public List<ProductResponse> getProducts() {
-        return productRepository.findAll().stream()
+        return productRepository.findAllByDeletedFalse().stream()
                 .map(ProductResponse::from)
                 .toList();
     }
@@ -44,7 +45,7 @@ public class ProductService {
     // 상품 수정
     @Transactional
     public Long updateProduct(Long productId, ProductRequest request) {
-        Product product = productRepository.findById(productId)
+        Product product = productRepository.findByIdAndDeletedFalse(productId)
                 .orElseThrow(() -> new IllegalArgumentException("해당 상품이 존재하지 않습니다."));
 
         product.update(
@@ -59,9 +60,9 @@ public class ProductService {
     // 상품 삭제
     @Transactional
     public void deleteProduct(Long productId) {
-        Product product = productRepository.findById(productId)
+        Product product = productRepository.findByIdAndDeletedFalse(productId)
                 .orElseThrow(() -> new IllegalArgumentException("해당 상품이 존재하지 않습니다."));
 
-        productRepository.delete(product);
+        product.delete();
     }
 }

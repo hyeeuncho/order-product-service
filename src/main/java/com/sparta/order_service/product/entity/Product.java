@@ -19,6 +19,7 @@ public class Product {
     private String name;
     private Integer price;
     private String description;
+    private boolean deleted;
 
     // 상품 수정
     public void update(String name, Integer price, String description) {
@@ -31,5 +32,10 @@ public class Product {
         if (description != null) {
             this.description = description;
         }
+    }
+
+    // 상품 삭제
+    public void delete() {
+        this.deleted = true;
     }
 }
