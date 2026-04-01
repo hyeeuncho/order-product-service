@@ -1,12 +1,15 @@
 package com.sparta.order_service.order.controller;
 
 import com.sparta.order_service.global.ApiResponse;
+import com.sparta.order_service.global.PageResponse;
 import com.sparta.order_service.order.dto.OrderRequest;
 import com.sparta.order_service.order.dto.OrderResponse;
 import com.sparta.order_service.order.service.OrderService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -32,8 +35,10 @@ public class OrderController {
 
     // 주문 조회 - 목록(페이지네이션)
     @GetMapping
-    public ApiResponse<Page<OrderResponse>> getOrders(Pageable pageable) {
+    public ApiResponse<PageResponse<OrderResponse>> getOrders(
+            @PageableDefault(size = 20, sort = "createdAt", direction = Sort.Direction.DESC)
+            Pageable pageable) {
         Page<OrderResponse> response = orderService.getOrders(pageable);
-        return ApiResponse.success(HttpStatus.OK, "주문 목록 조회 성공", response);
+        return ApiResponse.success(HttpStatus.OK, "주문 목록 조회 성공", PageResponse.of(response));
     }
 }
