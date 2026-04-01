@@ -13,6 +13,7 @@ public class OrderResponse {
     private Long productId;
     private String productName;
     private Integer orderedPrice;
+    private Integer quantity;
     private LocalDateTime createdAt;
 
     public static OrderResponse from(Order order) {
@@ -21,6 +22,7 @@ public class OrderResponse {
                 .productId(order.getProduct().getId())
                 .productName(order.getProduct().getName())
                 .orderedPrice(order.getOrderedPrice())
+                .quantity(order.getQuantity())
                 .createdAt(order.getCreatedAt())
                 .build();
     }

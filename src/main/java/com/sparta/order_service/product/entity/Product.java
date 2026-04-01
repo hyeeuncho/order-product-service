@@ -19,6 +19,7 @@ public class Product {
     private String name;
     private Integer price;
     private String description;
+    private Integer stock;
     private boolean deleted;
 
     // 상품 수정
@@ -32,6 +33,14 @@ public class Product {
         if (description != null) {
             this.description = description;
         }
+    }
+
+    // 재고 차감
+    public void decreaseStock(int quantity) {
+        if (this.stock < quantity) {
+            throw new IllegalArgumentException("재고가 부족합니다.");
+        }
+        this.stock -= quantity;
     }
 
     // 상품 삭제

@@ -11,13 +11,15 @@ public class ProductResponse {
     private final String name;
     private final Integer price;
     private final String description;
+    private final Integer stock;
 
     public static ProductResponse from(Product product) {
         return new ProductResponse(
                 product.getId(),
                 product.getName(),
                 product.getPrice(),
-                product.getDescription()
+                product.getDescription(),
+                product.getStock()
         );
     }
 }

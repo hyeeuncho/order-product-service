@@ -27,9 +27,12 @@ public class OrderService {
         Product product = productRepository.findByIdAndDeletedFalse(request.getProductId())
                 .orElseThrow(() -> new IllegalArgumentException("해당 상품이 존재하지 않습니다."));
 
+        product.decreaseStock(request.getQuantity());
+
         Order order = Order.builder()
                 .product(product)
                 .orderedPrice(product.getPrice())
+                .quantity(request.getQuantity())
                 .createdAt(LocalDateTime.now())
                 .build();
 

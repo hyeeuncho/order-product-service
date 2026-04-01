@@ -22,5 +22,6 @@ public class Order {
     private Product product;
 
     private Integer orderedPrice;
+    private Integer quantity;
     private LocalDateTime createdAt;
 }

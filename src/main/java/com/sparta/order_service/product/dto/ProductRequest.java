@@ -7,4 +7,5 @@ public class ProductRequest {
     private String name;
     private Integer price;
     private String description;
+    private Integer stock;
 }
