@@ -35,13 +35,6 @@ public class Product {
         }
     }
 
-    // 재고 차감
-    public void decreaseStock(int quantity) {
-        if (this.stock < quantity) {
-            throw new IllegalArgumentException("재고가 부족합니다.");
-        }
-        this.stock -= quantity;
-    }
 
     // 상품 삭제
     public void delete() {
