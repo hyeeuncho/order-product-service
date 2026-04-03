@@ -1,5 +1,7 @@
 package com.sparta.order_service.product.service;
 
+import com.sparta.order_service.global.exception.BusinessException;
+import com.sparta.order_service.global.exception.ErrorCode;
 import com.sparta.order_service.product.dto.ProductRequest;
 import com.sparta.order_service.product.dto.ProductResponse;
 import com.sparta.order_service.product.entity.Product;
@@ -31,7 +33,7 @@ public class ProductService {
     // 상품 조회 - 단건
     public ProductResponse getProduct(Long productId) {
         Product product = productRepository.findByIdAndDeletedFalse(productId)
-                .orElseThrow(() -> new IllegalArgumentException("해당 상품이 존재하지 않습니다."));
+                .orElseThrow(() -> new BusinessException(ErrorCode.PRODUCT_NOT_FOUND));
 
         return ProductResponse.from(product);
     }
@@ -47,7 +49,7 @@ public class ProductService {
     @Transactional
     public Long updateProduct(Long productId, ProductRequest request) {
         Product product = productRepository.findByIdAndDeletedFalse(productId)
-                .orElseThrow(() -> new IllegalArgumentException("해당 상품이 존재하지 않습니다."));
+                .orElseThrow(() -> new BusinessException(ErrorCode.PRODUCT_NOT_FOUND));
 
         product.update(
                 request.getName(),
@@ -62,7 +64,7 @@ public class ProductService {
     @Transactional
     public void deleteProduct(Long productId) {
         Product product = productRepository.findByIdAndDeletedFalse(productId)
-                .orElseThrow(() -> new IllegalArgumentException("해당 상품이 존재하지 않습니다."));
+                .orElseThrow(() -> new BusinessException(ErrorCode.PRODUCT_NOT_FOUND));
 
         product.delete();
     }

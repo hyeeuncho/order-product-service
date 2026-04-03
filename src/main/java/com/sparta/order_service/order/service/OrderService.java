@@ -1,5 +1,7 @@
 package com.sparta.order_service.order.service;
 
+import com.sparta.order_service.global.exception.BusinessException;
+import com.sparta.order_service.global.exception.ErrorCode;
 import com.sparta.order_service.order.dto.OrderRequest;
 import com.sparta.order_service.order.dto.OrderResponse;
 import com.sparta.order_service.order.entity.Order;
@@ -25,11 +27,11 @@ public class OrderService {
     @Transactional
     public Long createOrder(OrderRequest request) {
         Product product = productRepository.findByIdAndDeletedFalse(request.getProductId())
-                .orElseThrow(() -> new IllegalArgumentException("해당 상품이 존재하지 않습니다."));
+                .orElseThrow(() -> new BusinessException(ErrorCode.PRODUCT_NOT_FOUND));
 
         int updated = productRepository.decreaseStock(request.getProductId(), request.getQuantity());
         if (updated == 0) {
-            throw new IllegalArgumentException("재고가 부족합니다.");
+            throw new BusinessException(ErrorCode.PRODUCT_OUT_OF_STOCK);
         }
 
         Order order = Order.builder()
@@ -45,7 +47,7 @@ public class OrderService {
     // 주문 조회 - 단건
     public OrderResponse getOrder(Long orderId) {
         Order order = orderRepository.findByIdWithProduct(orderId)
-                .orElseThrow(() -> new IllegalArgumentException("해당 주문이 존재하지 않습니다."));
+                .orElseThrow(() -> new BusinessException(ErrorCode.ORDER_NOT_FOUND));
 
         return OrderResponse.from(order);
     }
